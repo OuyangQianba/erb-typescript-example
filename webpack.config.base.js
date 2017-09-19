@@ -7,26 +7,29 @@ import webpack from 'webpack';
 import { dependencies as externals } from './app/package.json';
 
 export default {
-  externals: Object.keys(externals || {}),
+  externals: Object.keys(externals || {
+    react: "React"
+
+  }),
 
   module: {
     rules: [{
       test: /\.tsx?$/,
       exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader'
-      }
+      // use: {
+      //   loader: 'babel-loader'
+      // }
       // @TODO: Waiting until awesome-typescript-loader can throw
       //        warnings instead of errors. This makes sure that the dev
       //        build will work even with typescript errors
-      // use: {
-      //   loader: 'awesome-typescript-loader',
-      //   options: {
-      //     silent: true,
-      //     useBabel: true,
-      //     useCache: true
-      //   }
-      // }
+      use: {
+        loader: 'awesome-typescript-loader',
+        options: {
+          silent: true,
+          useBabel: true,
+          useCache: true
+        }
+      }
     }]
   },
 

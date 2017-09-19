@@ -1,0 +1,54 @@
+import { ipcMain } from "electron"
+import * as util from "util"
+const registerServices = {}
+
+export class CalleeProxy {
+  constructor(emitter, services) {
+    this.services = services || {}
+    emitter.on('call', async (args) => {
+      const ser = this.services[args.namespace]
+      if (!ser) {
+        emitter.emit("result", {
+          id: args.id,
+          error: new Error("ENONS")
+        })
+        return
+      }
+      const fn = ser[args.method]
+      if (util.isFunction(fn)) {
+        try {
+          const ret = await fn(...args.args)
+          emitter.emit('result', {
+            id: args.id,
+            result: ret
+          })
+        } catch (e) {
+          emitter.emit('result', {
+            id: args.id,
+            error: e
+          })
+        }
+      } else {
+        emitter.emit('result', {
+          id: args.id,
+          error: new Error('ENOMETHOD')
+        })
+      }
+    })
+  }
+  register(namespace, services) {
+    if (namespace in this.services) {
+      this.services[namespace] = {
+        ...this.services[namespace],
+        ...services
+      }
+    } else {
+      this.services[namespace] = services
+    }
+  }
+}
+
+const calleeProxy = new CalleeProxy(ipcMain)
+export function register(services, name = "main") {
+  calleeProxy.register(name, services)
+}

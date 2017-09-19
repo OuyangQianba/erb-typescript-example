@@ -14,7 +14,7 @@ function mapStateToProps(state: stateType) {
 }
 
 function mapDispatchToProps(dispatch: () => {}) {
-  return bindActionCreators(CounterActions, dispatch);
+  return bindActionCreators(CounterActions as any, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+export default connect(mapStateToProps, mapDispatchToProps)(Counter) as any// ComponentClass<RouteComponentProps<any> ;

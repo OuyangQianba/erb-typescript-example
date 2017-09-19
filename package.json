@@ -20,7 +20,8 @@
     "start": "cross-env NODE_ENV=production electron ./app/",
     "prestart": "npm run build",
     "ts": "tsc",
-    "start-hot-renderer": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
+    "start-dev-main": "cross-env NODE_ENV=development node --trace-warnings -r babel-register ./node_modules/.bin/webpack --config webpack.config.main.dev.js && yarn run-dev",
+    "run-dev": "cross-env NODE_ENV=development HOT=1 ./node_modules/.bin/electron app/main.dev.js",
     "postinstall": "concurrently \"npm run build\" \"npm run build-dll\" \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
     "dev": "cross-env START_HOT=1 npm run hot-updates-server",
     "package": "npm run build && build --publish never",
@@ -73,7 +74,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
+    "url": "git+https://github.com/OuyangQianba/copilot-electron.git"
   },
   "author": {
     "name": "C. T. Lin",
@@ -82,11 +83,11 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/OuyangQianba/issues"
   },
   "keywords": [
     "electron",
-    "boilerplate",
+    "copilot",
     "react",
     "redux",
     "sass",
@@ -94,7 +95,6 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mocks/fileMock.js",
@@ -120,7 +120,6 @@
     }
   },
   "devDependencies": {
-    "@types/electron": "^1.4.38",
     "@types/enzyme": "^2.8.0",
     "@types/history": "^4.5.1",
     "@types/jest": "^19.2.3",
@@ -161,7 +160,7 @@
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.0",
     "devtron": "^1.4.0",
-    "electron": "^1.6.5",
+    "electron": "1.7.6",
     "electron-builder": "^17.0.1",
     "electron-devtools-installer": "^2.2.0",
     "enzyme": "^2.8.2",

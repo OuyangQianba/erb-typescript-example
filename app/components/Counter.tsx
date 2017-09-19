@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import React from 'react'
 import { Link } from 'react-router-dom';
-import * as styles from './Counter.css';
+const styles = require('./Counter.css')
+// import * as styles from './Counter.css';
 
 interface Props {
   increment: () => void;

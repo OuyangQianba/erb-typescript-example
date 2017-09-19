@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Children } from 'react';
+import React from 'react';
 
 interface Props {
 

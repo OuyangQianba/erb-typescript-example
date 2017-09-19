@@ -178,10 +178,10 @@ export default merge.smart(baseConfig, {
 
   plugins: [
     // @TODO: When using awesome-typescript-loader, make sure to enable this
-    // new webpack.ProvidePlugin({
-    //   'React': 'react',
-    //   'ReactDOM': 'react-dom'
-    // }),
+    new webpack.ProvidePlugin({
+      'React': 'react',
+      'ReactDOM': 'react-dom'
+    }),
 
     new webpack.DllReferencePlugin({
       context: process.cwd(),
@@ -250,7 +250,7 @@ export default merge.smart(baseConfig, {
       if (process.env.START_HOT) {
         spawn(
           'npm',
-          ['run', 'start-hot-renderer'],
+          ['run', 'start-dev-main'],
           { shell: true, env: process.env, stdio: 'inherit' }
         )
         .on('close', code => process.exit(code))

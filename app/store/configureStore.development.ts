@@ -1,10 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { hashHistory } from 'react-router-dom';
+import reduxThunk from 'redux-thunk';
+//No hashHistory exported in react-router-dom
+// import { hashHistory } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware, push } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
-import rootReducer from '../reducers';
+import reducers from '../reducers';
 import * as counterActions from '../actions/counter';
 import { counterStateType } from '../reducers/counter';
 
@@ -16,7 +17,7 @@ const configureStore = (initialState: counterStateType) => {
   const enhancers = [];
 
   // Thunk Middleware
-  middleware.push(thunk);
+  middleware.push(reduxThunk);
 
   // Logging Middleware
   const logger = createLogger({
@@ -24,10 +25,9 @@ const configureStore = (initialState: counterStateType) => {
     collapsed: true,
   });
   middleware.push(logger);
-
   // Router Middleware
-  const router = routerMiddleware(hashHistory);
-  middleware.push(router);
+  // const router = routerMiddleware(hashHistory);
+  // middleware.push(router);
 
   // Redux DevTools Configuration
   const actionCreators = {
@@ -36,8 +36,9 @@ const configureStore = (initialState: counterStateType) => {
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
+  const win: any = window
   const composeEnhancers = '__REDUX_DEVTOOLS_EXTENSION_COMPOSE__' in window
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    ? win.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
       actionCreators,
     })
@@ -49,7 +50,7 @@ const configureStore = (initialState: counterStateType) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(reducers, initialState, enhancer);
 
   if (module.hot) {
     module.hot.accept('../reducers', () =>

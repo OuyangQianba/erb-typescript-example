@@ -1,7 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import MenuBuilder from './menu';
-
-let mainWindow = null;
+import * as ipc from "./ipc/main"
+import { Test } from "./test"
+new Test()
+let mainWindow: any
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -48,6 +50,14 @@ app.on('ready', async () => {
     width: 1024,
     height: 728
   });
+
+  ipc.register({
+    active() {
+      console.log("active")
+      mainWindow.show()
+      mainWindow.focus()
+    }
+  })
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 

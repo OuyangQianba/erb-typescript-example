@@ -1,11 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 import configureStore from './store/configureStore';
 import './app.global.css';
+import { IPCProxy } from "./ipc/render"
+const mainProxy = new IPCProxy()
+setTimeout(mainProxy.active, 5000)
 
 const store = configureStore.configureStore();
+console.log('here')
+
 
 render(
   <AppContainer>
